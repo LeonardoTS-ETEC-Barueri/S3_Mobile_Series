@@ -1,21 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function App() {
+import LoginPage from './src/pages/LoginScreen'
+
+// Aqui teremos nosso Router.
+function LoginScreen(){
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <LoginPage>
+      
+    </LoginPage>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Stack = createStackNavigator(); // Pilha de Navegação -- Similar ao Router do NodeJS/Express.
+
+function App(){
+
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+
+        <Stack.Screen name="LoginTela" component={LoginScreen}
+            options={
+                {
+                  headerTintColor: '#fff',
+                  headerStyle: { 
+                      backgroundColor: '6CA2F7',
+                      borderBottomWidth: 5,
+                      borderBottomColor: '#C5C5C5'
+                  },
+                  headerTitleStyle: {
+                      color: '#FFF',
+                      fontSize: 30
+                  }
+                }
+            }
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+  
+}
+
+export default App;
