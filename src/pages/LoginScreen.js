@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, Button } from 'react-native';
+import firebase from 'firebase';
 
 import FormRow from '../component/FormRow';
 
@@ -14,8 +15,40 @@ export default class LoginPage extends React.Component{
         }
     }
 
+    componentDidMount(){
+
+        const config = {
+            apiKey: "AIzaSyA2ajecXJV5PRi0SzacVQiWlmLubIWJ8yo",
+            authDomain: "lts-series.firebaseapp.com",
+            databaseURL: "https://lts-series.firebaseio.com",
+            projectId: "lts-series",
+            storageBucket: "lts-series.appspot.com",
+            messagingSenderId: "583267014401",
+            appId: "1:583267014401:web:dc590066f2a7828d2e2d00",
+            measurementId: "G-J2RSKTK998"
+        };
+
+        if (firebase.apps.length === 0){
+            firebase.initializeApp(config);
+        }
+
+    }
+
     tryLogin(){
+
         console.log('state: ', this.state);
+
+        const {mail, password} = this.state;
+
+        firebase.auth()
+        .signInWithEmailAndPassword(mail, password)
+        .then((user) => {
+            console.log('Autenticado!', user)
+        })
+        .catch((error) => {
+            console.log('Usuário não autenticado', error)
+        })
+
     }
 
     onChangeEmail(mail){
