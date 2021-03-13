@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TextInput, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text, Alert } from 'react-native';
 import firebase from 'firebase';
 
 import FormRow from '../component/FormRow';
@@ -11,22 +11,14 @@ export default class LoginPage extends React.Component{
 
         this.state = {
             mail: '',
-            password: ''
+            password: '',
+            message: ''
         }
     }
 
     componentDidMount(){
 
-        const config = {
-            apiKey: "AIzaSyA2ajecXJV5PRi0SzacVQiWlmLubIWJ8yo",
-            authDomain: "lts-series.firebaseapp.com",
-            databaseURL: "https://lts-series.firebaseio.com",
-            projectId: "lts-series",
-            storageBucket: "lts-series.appspot.com",
-            messagingSenderId: "583267014401",
-            appId: "1:583267014401:web:dc590066f2a7828d2e2d00",
-            measurementId: "G-J2RSKTK998"
-        };
+        const config = undefined; // Substitua "undefined" pelo { objeto } da sua "firebaseConfig".
 
         if (firebase.apps.length === 0){
             firebase.initializeApp(config);
@@ -36,19 +28,62 @@ export default class LoginPage extends React.Component{
 
     tryLogin(){
 
-        console.log('state: ', this.state);
+        // console.log('stateBeforeTryLogin: ', this.state);
 
         const {mail, password} = this.state;
 
         firebase.auth()
         .signInWithEmailAndPassword(mail, password)
         .then((user) => {
-            console.log('Autenticado!', user)
+            this.setState({ 
+                message: 'Usuário autenticado com sucesso!'
+            })
+            console.log('Autenticado!'/*, user*/);
         })
         .catch((error) => {
-            console.log('Usuário não autenticado', error)
+            this.setState({ 
+                message: 'Erro ao autenticar o usuário!'
+            })
+
+            if(error.code === 'auth/user-not-found'){
+                Alert.alert('USUÁRIO NÃO ENCONTRADO',
+                'DESEJA CRIAR UM USUÁRIO?',
+                [
+                    {text: 'NÃO', onPress: () => { console.log('Não criar usuário.') } },
+                    {text: 'SIM', onPress: () => { console.log('Crie o usuário.') } },
+                ]
+                );
+            }
+
+            console.log('Usuário não autenticado'/*, error*/);
         })
 
+        // console.log('stateAfterTryLogin: ', this.state);
+
+    }
+
+    renderMessage(){
+
+        const { message } = this.state;
+
+        if(!message){
+            return null;
+        }
+        
+        return(
+            <View>
+                <Text> { message } </Text>
+            </View>
+        )
+
+    }
+
+    renderButton(){
+        return(
+            <Button title="ENTRAR"
+                    onPress={ () => { this.tryLogin() } }
+            />
+        )
     }
 
     onChangeEmail(mail){
@@ -90,7 +125,9 @@ export default class LoginPage extends React.Component{
                     </TextInput>
                 </FormRow>
 
-                <Button title="ENTRAR" onPress={ () => { this.tryLogin() } } />
+                { this.renderButton() }
+
+                { this.renderMessage() }
                 
             </View>
 
