@@ -18,7 +18,16 @@ export default class LoginPage extends React.Component{
 
     componentDidMount(){
 
-        const config = undefined; // Substitua "undefined" pelo { objeto } da sua "firebaseConfig".
+        const config = {
+            apiKey: "",
+            authDomain: "",
+            databaseURL: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: "",
+            measurementId: ""
+        };
 
         if (firebase.apps.length === 0){
             firebase.initializeApp(config);
@@ -50,8 +59,31 @@ export default class LoginPage extends React.Component{
                 'DESEJA CRIAR UM USUÁRIO?',
                 [
                     {text: 'NÃO', onPress: () => { console.log('Não criar usuário.') } },
-                    {text: 'SIM', onPress: () => { console.log('Crie o usuário.') } },
-                ]
+                    {text: 'SIM', onPress: () => { 
+
+                        console.log('Crie o usuário.');
+
+                        firebase.auth()
+                        .createUserWithEmailAndPassword(mail, password)
+                        .then((user) => {
+                            this.setState({ 
+                                message: 'Usuário criado com sucesso!'
+                            });
+                            console.log('Usuário criado com sucesso: ', user);
+                        })
+                        .catch((error) => {
+                            this.setState({ 
+                                message: 'Erro ao criar o usuário.'
+                            });
+                            console.log('Erro ao criar o usuário: ', error);
+                        });
+
+                    } },
+                ],
+                {
+                    cancelable: false
+                }
+
                 );
             }
 
