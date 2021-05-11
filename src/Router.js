@@ -2,11 +2,16 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
  
 import LoginScreen from './pages/LoginScreen';
-// import SeriesPage from './pages/SeriesPage'
+import SeriesPage from './pages/SeriesPage';
  
 const AppNavigator = createStackNavigator({
  
-    'Main':{
+    'Main': {
+
+        screen: SeriesPage
+
+    },
+    'Login':{
 
         screen: LoginScreen,
         navigationOptions:{

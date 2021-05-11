@@ -4,7 +4,11 @@ import firebase from 'firebase';
 
 import FormRow from '../component/FormRow';
 
-export default class LoginPage extends React.Component{
+import { connect } from 'react-redux';
+
+import { tryLogin } from '../actions';
+
+class LoginPage extends React.Component{
 
     constructor(props){
         super(props);
@@ -19,14 +23,7 @@ export default class LoginPage extends React.Component{
     componentDidMount(){
 
         const config = {
-            apiKey: "",
-            authDomain: "",
-            databaseURL: "",
-            projectId: "",
-            storageBucket: "",
-            messagingSenderId: "",
-            appId: "",
-            measurementId: ""
+            // Sua auth firebase aqui.
         };
 
         if (firebase.apps.length === 0){
@@ -39,57 +36,36 @@ export default class LoginPage extends React.Component{
 
         // console.log('stateBeforeTryLogin: ', this.state);
 
+        console.log('State:', this.state);
         const {mail, password} = this.state;
 
-        firebase.auth()
-        .signInWithEmailAndPassword(mail, password)
+        // this.props.navigation.navigate('Main'); // Fica pra documentar a diferença entre Navigate/Replace...
+        this.props.tryLogin({mail, password})
         .then((user) => {
-            this.setState({ 
-                message: 'Usuário autenticado com sucesso!'
-            })
-            console.log('Autenticado!'/*, user*/);
-        })
-        .catch((error) => {
-            this.setState({ 
-                message: 'Erro ao autenticar o usuário!'
-            })
 
-            if(error.code === 'auth/user-not-found'){
-                Alert.alert('USUÁRIO NÃO ENCONTRADO',
-                'DESEJA CRIAR UM USUÁRIO?',
-                [
-                    {text: 'NÃO', onPress: () => { console.log('Não criar usuário.') } },
-                    {text: 'SIM', onPress: () => { 
+            if (user){
 
-                        console.log('Crie o usuário.');
+                this.props.navigation.replace('Main');
 
-                        firebase.auth()
-                        .createUserWithEmailAndPassword(mail, password)
-                        .then((user) => {
-                            this.setState({ 
-                                message: 'Usuário criado com sucesso!'
-                            });
-                            console.log('Usuário criado com sucesso: ', user);
-                        })
-                        .catch((error) => {
-                            this.setState({ 
-                                message: 'Erro ao criar o usuário.'
-                            });
-                            console.log('Erro ao criar o usuário: ', error);
-                        });
+            } else {
 
-                    } },
-                ],
-                {
-                    cancelable: false
-                }
+                this.setState({
+                    message: ''
+                });
 
-                );
             }
 
-            console.log('Usuário não autenticado'/*, error*/);
         })
+        .catch((error) => {
 
+            this.setState({
+                message: 'ERRO AO EFETUAR O LOGIN'
+            });
+
+        });
+        
+        
+        
         // console.log('stateAfterTryLogin: ', this.state);
 
     }
@@ -176,4 +152,6 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         paddingBottom: 10
     }
-})
+});
+
+export default connect(null, { tryLogin })(LoginPage);
