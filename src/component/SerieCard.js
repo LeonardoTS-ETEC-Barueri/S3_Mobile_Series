@@ -1,9 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 
-const SeriesCard = ({ serie }) => {
+const SeriesCard = ({ serie, onNavigate }) => (
     
-    <View style={ styles.container }>
+    <TouchableOpacity 
+        onPress={
+            onNavigate
+        } 
+        style={ styles.container }>
 
         <View style={ styles.card }>
             <Image  source={ 
@@ -15,11 +19,17 @@ const SeriesCard = ({ serie }) => {
                     aspectRatio={1}
                     resizeMode="cover"
             />
+
+            <View style={styles.cardTitleWrapper}>
+
+                <Text style={styles.cardTitle}>{ serie.title }</Text>
+
+            </View>
         </View>
 
-    </View>
+    </TouchableOpacity>
 
-}
+)
 
 const styles = StyleSheet.create({
 
@@ -32,6 +42,24 @@ const styles = StyleSheet.create({
 
         flex: 1,
         borderEndWidth: 1
+    },
+    cardTitleWrapper: {
+        backgroundColor: '#000',
+        height: 50,
+        position: 'absolute',
+        bottom: 0,
+        opacity: 0.7,
+        width: '100%',
+        paddingBottom: 10,
+        paddingTop: 10,
+        paddingLeft: 5,
+        paddingRight: 5,
+        alignItems: 'center'
+    },
+    cardTitle: {
+        color: '#fff',
+        fontSize: 15,
+        fontWeight: 'bold',
     }
 
 });
