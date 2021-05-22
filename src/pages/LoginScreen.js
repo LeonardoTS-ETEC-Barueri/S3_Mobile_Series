@@ -23,7 +23,7 @@ class LoginPage extends React.Component{
     componentDidMount(){
 
         const config = {
-            // Suas credenciais Firebase aqui!
+            // Sua auth firebase vai aqui.
         };
 
         if (firebase.apps.length === 0){

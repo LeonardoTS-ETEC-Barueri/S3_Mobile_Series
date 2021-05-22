@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+
+import LongText from '../component/LongText';
 
 export default class SerieDetailPage extends React.Component {
     render() {
@@ -8,17 +10,24 @@ export default class SerieDetailPage extends React.Component {
 
         return (
             <View>
-                <Image
-                    style={styles.image}
-                    source={
-                        {
-                            uri: serie.img
+
+                <ScrollView>
+                    <Image
+                        style={styles.image}
+                        source={
+                            {
+                                uri: serie.img
+                            }
                         }
-                    }
-                />
-                <Text>TITULO: { serie.title }</Text>
-                <Text>GENERO: { serie.gender }</Text>
-                <Text>AVALIAÇÃO: { serie.rate }</Text>
+                    />
+                    <Text>TITULO: { serie.title }</Text>
+                    <Text>GENERO: { serie.gender }</Text>
+                    <Text>AVALIAÇÃO: { serie.rate }</Text>
+                    {/* <Text>DESCRIÇÃO: { serie.description }</Text> */}
+                    
+                    <LongText label="DESCRIÇÃO" content={ serie.description } />
+
+                </ScrollView>
             </View>
         )
 

@@ -10,20 +10,12 @@ const SeriesCard = ({ serie, isFirstColumn, onNavigate }) => (
         style={[ styles.container, isFirstColumn ? styles.firstColumn : styles.lastColumn ]}>
 
         <View style={ styles.card }>
-            <Image  source={ 
-                        { 
-                            uri: serie.img
-                        }   
-                    }
-                    aspectRatio={1}
-                    resizeMode="cover"
+            <Image
+                source={ require('../../sources/add.png') }
+                style={ styles.image }
+                aspectRatio={1}
+                resizeMode="cover"
             />
-
-            <View style={styles.cardTitleWrapper}>
-
-                <Text style={styles.cardTitle}>{ serie.title }</Text>
-
-            </View>
         </View>
 
     </TouchableOpacity>
@@ -40,7 +32,7 @@ const styles = StyleSheet.create({
     card: {
 
         flex: 1,
-        borderWidth: 1
+        // borderWidth: 1
     },
     cardTitleWrapper: {
         backgroundColor: '#000',
@@ -67,6 +59,10 @@ const styles = StyleSheet.create({
     },
     lastColumn:{
         paddingRight: 10
+    },
+    image: { 
+        width: '100%',
+        height: '100%'
     }
 
 });
